@@ -5,7 +5,6 @@
 * Linux-сервер (предпочтительно Debian или Ubuntu)
 * Nginx >=1.6
 * Python >=3.4
-
 * Imagemagick
 
 ## Nginx
