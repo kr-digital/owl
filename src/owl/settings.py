@@ -10,7 +10,7 @@ FORMAT = 'JSON'
 
 # Storage engine
 STORAGE_ENGINE = 'local'
-STORAGE_ENGINE_LOCAL_DATA_PATH = '/path/to/storage/data'
+STORAGE_ENGINE_LOCAL_DATA_PATH = '/path/to/domain.name/storage/data'
 
 # Storage image operator
 STORAGE_IMAGE_OPERATOR = 'imagemagick'
