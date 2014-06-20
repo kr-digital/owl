@@ -1,0 +1,25 @@
+#!/bin/bash
+
+command=$1
+
+if [ $command == '--help' ]; then
+	echo 'Availble commands:';
+	echo ' start';
+	echo ' stop';
+	echo ' reload';
+	exit
+fi
+
+if [ $command == 'start' ]; then
+	uwsgi config/uwsgi.ini;
+fi
+
+if [ $command == 'reload' ]; then
+	uwsgi --reload /tmp/owl.uwsgi.pid;
+fi
+
+if [ $command == 'stop' ]; then
+	uwsgi --stop /tmp/owl.uwsgi.pid;
+fi
+
+exit 0
