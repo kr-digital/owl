@@ -25,7 +25,7 @@ client-token задается в файле конфигурации *owl/settin
 
 Запрос:
 
-		URL: /ap/files
+		URL: /api/files
 		Method: GET
 
 Параметры:
@@ -60,7 +60,7 @@ client-token задается в файле конфигурации *owl/settin
 
 Запрос:
 
-		URL: /ap/files
+		URL: /api/files
 		Method: DELETE
 
 Параметры:
