@@ -60,7 +60,7 @@ class Core:
         :return: owl.Answer
         """
         # Check file extension
-        if file.name.rsplit('.', 1)[1] not in settings.ALLOWED_EXTENSIONS:
+        if file.name.rsplit('.', 1)[1].lower() not in settings.ALLOWED_EXTENSIONS:
             a = Answer()
             a.set_result(False)
             a.set_err_code(error_codes.UPLOAD_WRONG_EXTENSION)
