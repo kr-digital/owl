@@ -6,6 +6,7 @@
 * Nginx >=1.6
 * Python >=3.4
 * Imagemagick
+* Librsvg
 
 ## Nginx
 
@@ -52,7 +53,15 @@
 
 		pip install flask
 		pip install uwsgi
+		
+7. Переходим в папку *storage*
+		
+		cd ./storage
+		
+8. Создаём папку *data*
 
-7. Запускаем сервер
+		mkdir data
+
+9. Запускаем сервер
 
 		./scripts/server start

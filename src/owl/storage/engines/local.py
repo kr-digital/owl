@@ -4,6 +4,7 @@
 import os
 import re
 import hashlib
+from owl.storage.core import Core
 from owl.storage.engines import AbstractStorage
 from owl import settings, error_codes
 from owl.answer import Answer
@@ -128,15 +129,22 @@ class LocalStorage(AbstractStorage):
             if not os.path.exists(file_dir):
                 os.mkdir(file_dir)
 
+            # Parse filters
+            parser = processors.FilterParser(filters)
+
             # Result filename
-            file_result_path = os.path.join(file_dir, filters + '.' + filename.split('.').pop())
-            file_result_name = 'cache/' + filename + '/' + filters + '.' + filename.split('.').pop()
+            file_result_path = self.build_file_result_path(file_dir, filters, filename, parser.get_commands())
+            file_result_name = self.build_file_result_name(filters, filename, parser.get_commands())
+
+            # file_result_path = os.path.join(file_dir, filters + '.' + filename.split('.').pop())
+            # file_result_name = 'cache/' + filename + '/' + filters + '.' + filename.split('.').pop()
 
             # Check if result file already exists
             if os.path.exists(file_result_path) and not force:
                 if settings.DEBUG:
                     print('   File {0} has taken from cache'.format(file_result_name))
                 a.set_result(True)
+
                 a.set_output_file(file_result_name)
                 a.set_output_filesize(os.path.getsize(file_result_path))
                 return a
@@ -146,11 +154,14 @@ class LocalStorage(AbstractStorage):
 
             # TODO: check for filesize after copying
 
-            # Parse filters
-            parser = processors.FilterParser(filters)
+            # Define operator to use
+            if Core.is_vector(file_original):
+                op = settings.STORAGE_VECTOR_OPERATOR
+            else:
+                op = settings.STORAGE_IMAGE_OPERATOR
 
             # Get image operator
-            operator = processors.get_image_operator(file_result_path, settings.STORAGE_IMAGE_OPERATOR)
+            operator = processors.get_image_operator(file_result_path, op)
 
             # Get image processor
             processor = processors.ImageProcessor()
@@ -161,6 +172,8 @@ class LocalStorage(AbstractStorage):
                     print('  Added command {0} on file {1} with args {2}'.format(c['command'], filename, c['args']))
                 if c['command'] == 'resample':
                     processor.add_command(commands.ResampleImageCommand(operator, *c['args']))
+                elif c['command'] == 'convert':
+                    processor.add_command(commands.ConvertImageCommand(operator, *c['args']))
                 elif c['command'] == 'saturate':
                     processor.add_command(commands.SaturateImageCommand(operator, *c['args']))
 
@@ -168,8 +181,8 @@ class LocalStorage(AbstractStorage):
             processor.execute_commands()
 
             a.set_result(True)
-            a.set_output_file(file_result_name)
-            a.set_output_filesize(os.path.getsize(file_result_path))
+            a.set_output_file(operator.a_filename)
+            a.set_output_filesize(os.path.getsize(operator.filename))
             return a
         else:
             a.set_result(True)
@@ -205,3 +218,50 @@ class LocalStorage(AbstractStorage):
         a.set_request_file(filename)
         a.set_result(True)
         return a
+
+    def build_file_result_path(self, file_dir, filters, filename, commands):
+        """ Build path to result file
+        :param file_dir: file directory
+        :type file_dir: str
+        :param filters: processing filters
+        :type filters: str
+        :param filename: filename
+        :type filename: str
+        :return: str
+        """
+
+        return os.path.join(file_dir, filters.replace('|', '_') + os.path.splitext(filename)[1] + self.extract_convert_ext(commands))
+
+    def build_file_result_name(self, filters, filename, commands):
+        """ Build result filename
+        :param filters: processing filters
+        :type filters: str
+        :param filename: filename
+        :type filename: str
+        :param commands: list of commands
+        :type commands: list
+        :return: str
+        """
+
+        return os.path.join('cache/', filename, filters.replace('|', '_') + os.path.splitext(filename)[1] + self.extract_convert_ext(commands))
+
+    def extract_convert_ext(self, commands):
+        """ Extracts file extention converts to
+        :param commands: list of commands
+        :type commands: list
+        :return: str
+        """
+
+        ext = ""
+
+        commands.reverse()
+        for c in commands:
+            if c['command'] == 'resample':
+                if c['args'][3] is not None:
+                    ext = c['args'][3]
+                break
+            elif c['command'] == 'convert':
+                ext = c['args'][0]
+                break
+
+        return ext

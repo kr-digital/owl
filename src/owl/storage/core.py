@@ -60,7 +60,9 @@ class Core:
         :return: owl.Answer
         """
         # Check file extension
-        if file.name.rsplit('.', 1)[1] not in settings.ALLOWED_EXTENSIONS:
+        # if file.name.rsplit('.', 1)[1] not in settings.ALLOWED_EXTENSIONS:
+
+        if not Core.is_allowed(file.name):
             a = Answer()
             a.set_result(False)
             a.set_err_code(error_codes.UPLOAD_WRONG_EXTENSION)
@@ -111,6 +113,66 @@ class Core:
 
         return r
 
+    @staticmethod
+    def is_allowed(file):
+        """Check if file allowed
+        :param file: filename
+        :type file: str
+        :return bool
+        """
+        ext = os.path.splitext(file)[1].replace('.','')
+
+        for a in settings.ALLOWED_EXTENSIONS:
+            if ext in settings.ALLOWED_EXTENSIONS[a]:
+                return True
+                break
+
+        return False
+
+        # if ext in settings.ALLOWED_EXTENSIONS. or ext:
+
+    @staticmethod
+    def is_raster(file):
+        """Check if file is raster graphics
+        :param file: filename
+        :type file: str
+        :return bool
+        """
+        ext = os.path.splitext(file)[1].replace('.','')
+
+        if ext in settings.ALLOWED_EXTENSIONS['raster']:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def is_vector(file):
+        """Check if file is vector graphics
+        :param file: filename
+        :type file: str
+        :return bool
+        """
+        ext = os.path.splitext(file)[1].replace('.','')
+        
+        if ext in settings.ALLOWED_EXTENSIONS['vector']:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def is_binary(file):
+        """Check if file is binary data
+        :param file: filename
+        :type file: str
+        :return bool
+        """
+        ext = os.path.splitext(file)[1].replace('.','')
+
+        if ext in settings.ALLOWED_EXTENSIONS['binary']:
+            return True
+        else:
+            return False
+
     def __threads_get_file(self, i, q):
         """Thread wrapper for __get_file method
 
@@ -143,7 +205,7 @@ class Core:
         self.__threads_result = []
         return __tmp
 
-    def __get_file(self, file, filters, force):
+    def __get_file(self, file, filters = None, force = False):
         """Get file from storage
 
         :param file: filename at storage
