@@ -3,6 +3,7 @@
 """
 from abc import ABCMeta, abstractmethod
 import re
+import os
 
 
 def get_image_operator(f, t='imagemagick'):
@@ -14,10 +15,15 @@ def get_image_operator(f, t='imagemagick'):
     :type t: str
     :return: AbstractImageOperator
     """
+
     if t == 'imagemagick':
         from owl.storage.processors.imagemagick import Imagemagick
 
         return Imagemagick(f)
+    elif t == 'librsvg':
+        from owl.storage.processors.rsvg import Rsvg
+
+        return Rsvg(f)
     else:
         from owl.storage.processors.imagemagick import Imagemagick
 
@@ -47,7 +53,7 @@ class FilterParser:
         """
         for c in filters.split('|'):
             # Resample command
-            m = re.compile(r'^w([0-9]+)h([0-9]+)(fit|fill)?$').match(c)
+            m = re.compile(r'^w([0-9]+)h([0-9]+)(fit|fill)?(\.[A-z]+)?$').match(c)
             if m:
                 self.__commands.append({'command': 'resample', 'args': m.groups()})
                 continue
@@ -57,6 +63,11 @@ class FilterParser:
             if m:
                 self.__commands.append({'command': 'saturate', 'args': m.groups()})
                 continue
+
+            # Convert command
+            m = re.compile(r'^c(\.[A-z]+)$').match(c)
+            if m:
+                self.__commands.append({'command': 'convert', 'args': m.groups()})
 
     def get_commands(self):
         """Get all the commands
@@ -105,6 +116,23 @@ class AbstractImageOperator:
         """
         return self.__filename
 
+    @property
+    def a_filename(self):
+        """Get answer filename
+
+        :return: str
+        """
+        return 'cache' + self.__filename.split('cache')[1]
+
+    def set_filename(self, filename):
+        """Set filename
+        :param filename: new filename
+        :type filename: str
+        : return: str
+        """
+        self.__filename = filename
+        return self.filename
+
     def __init__(self, filename):
         """Constructor
 
@@ -114,7 +142,7 @@ class AbstractImageOperator:
         self.__filename = filename
 
     @abstractmethod
-    def resample(self, width, height, crop):
+    def resample(self, width, height, crop, f):
         """Resample image
 
         :param width: new image width
@@ -123,6 +151,8 @@ class AbstractImageOperator:
         :type height: int
         :param crop: crop method
         :type crop: str
+        :param format: format to convert
+        :type format: str
         """
 
     @abstractmethod
@@ -131,4 +161,12 @@ class AbstractImageOperator:
 
         :param percent: percent of saturation
         :type percent: int
+        """
+
+    @abstractmethod
+    def convert(self, f):
+        """Convert image
+
+        :param format: convert to format
+        :type format: String
         """

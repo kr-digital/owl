@@ -9,7 +9,7 @@ import subprocess
 class Imagemagick(AbstractImageOperator):
     """Imagemagick operator"""
 
-    def resample(self, width, height, crop):
+    def resample(self, width, height, crop, f):
         """Resample image
 
         :param width: new image width
@@ -18,7 +18,12 @@ class Imagemagick(AbstractImageOperator):
         :type height: str
         :param crop: crop method
         :type crop: str
+        :param f: convert to
+        :type f: str
         """
+
+        output_file = self.filename
+
         if crop is None:
             crop = 'fit'
 
@@ -30,7 +35,7 @@ class Imagemagick(AbstractImageOperator):
         if crop == 'fit':
             r = subprocess.getoutput(
                 settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -resize ' + width +
-                'x' + height + ' \'' + self.filename + '\'')
+                'x' + height + ' \'' + output_file + '\'')
 
             if r and settings.DEBUG:
                 print('    Error during processing: ', r)
@@ -38,10 +43,12 @@ class Imagemagick(AbstractImageOperator):
             r = subprocess.getoutput(
                 settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -resize ' + width +
                 'x' + height + '^ -gravity center -extent ' + width + 'x' + height + ' \'' +
-                self.filename + '\'')
+                output_file + '\'')
 
             if r and settings.DEBUG:
                 print('    Error during processing: ', r)
+
+        self.set_filename(output_file)
 
     def saturate(self, percent):
         """Saturate image
@@ -64,3 +71,22 @@ class Imagemagick(AbstractImageOperator):
 
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
+
+    def convert(self, f):
+        """Convert image
+
+        :param format: format to convert
+        :type format: str
+        """
+
+        if settings.DEBUG:
+            print(
+                '   Executed convert to {1} command by Rsvg on file {0}'.
+                format(self.filename, f))
+
+        output_file = self.filename
+
+        r = subprocess.getoutput(
+            settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' ' + ' \'' + output_file + '\'')
+
+        self.set_filename(output_file)

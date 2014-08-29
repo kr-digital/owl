@@ -14,9 +14,20 @@ STORAGE_ENGINE_LOCAL_DATA_PATH = '/path/to/domain.name/storage/data'
 
 # Storage image operator
 STORAGE_IMAGE_OPERATOR = 'imagemagick'
-STORAGE_IMAGE_OPERATOR_CONVERT_PATH = '/usr/bin/convert'
+STORAGE_IMAGE_OPERATOR_CONVERT_PATH = 'convert'
+
+# Storage vector graphic operator
+STORAGE_VECTOR_OPERATOR = 'librsvg'
+STORAGE_VECTOR_OPERATOR_CONVERT_PATH = 'rsvg-convert'
 
 # Storage options
 STORAGE_WORKERS = 1
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc'}
+# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'svg', 'svgz'}
+
+ALLOWED_EXTENSIONS = {
+    'binary': ['txt', 'pdf', 'doc'],
+    'raster': ['png', 'jpg', 'jpeg', 'gif'],
+    'vector': ['svg', 'svgz']
+}
+
 MAX_FILESIZE = 1024 * 1024 * 10
