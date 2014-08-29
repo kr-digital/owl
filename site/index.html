@@ -121,6 +121,7 @@
 <li>Nginx &gt;=1.6</li>
 <li>Python &gt;=3.4</li>
 <li>Imagemagick</li>
+<li>Librsvg</li>
 </ul>
 <h2 id="nginx">Nginx</h2>
 <p>Конфигурация хоста должна выглядеть так:</p>
@@ -169,6 +170,16 @@ mkdir storage
 <p>Устанавливаем flask и uwsgi</p>
 <pre class="prettyprint well"><code>pip install flask
 pip install uwsgi
+</code></pre>
+</li>
+<li>
+<p>Переходим в папку <em>storage</em></p>
+<pre class="prettyprint well"><code>cd ./storage
+</code></pre>
+</li>
+<li>
+<p>Создаём папку <em>data</em></p>
+<pre class="prettyprint well"><code>mkdir data
 </code></pre>
 </li>
 <li>
