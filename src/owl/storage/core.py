@@ -60,8 +60,6 @@ class Core:
         :return: owl.Answer
         """
         # Check file extension
-        # if file.name.rsplit('.', 1)[1] not in settings.ALLOWED_EXTENSIONS:
-
         if not Core.is_allowed(file.name):
             a = Answer()
             a.set_result(False)

@@ -136,9 +136,6 @@ class LocalStorage(AbstractStorage):
             file_result_path = self.build_file_result_path(file_dir, filters, filename, parser.get_commands())
             file_result_name = self.build_file_result_name(filters, filename, parser.get_commands())
 
-            # file_result_path = os.path.join(file_dir, filters + '.' + filename.split('.').pop())
-            # file_result_name = 'cache/' + filename + '/' + filters + '.' + filename.split('.').pop()
-
             # Check if result file already exists
             if os.path.exists(file_result_path) and not force:
                 if settings.DEBUG:
