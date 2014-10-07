@@ -64,6 +64,12 @@ class FilterParser:
                 self.__commands.append({'command': 'saturate', 'args': m.groups()})
                 continue
 
+            # Blur command
+            m = re.compile(r'^blur([0-9]+)x([0-9]+)$').match(c)
+            if m:
+                self.__commands.append({'command': 'blur', 'args': m.groups()})
+                continue
+
             # Convert command
             m = re.compile(r'^c(\.[A-z]+)$').match(c)
             if m:
@@ -164,7 +170,17 @@ class AbstractImageOperator:
         """
 
     @abstractmethod
-    def convert(self, f):
+    def blur(self, radius, sigma):
+        """Blur image
+
+        :param radius: radius of blur
+        :type radius: int
+        :param sigma: sigma of blur
+        :type sigma: int
+        """
+
+    @abstractmethod
+    def convert(self, format):
         """Convert image
 
         :param format: convert to format

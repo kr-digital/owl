@@ -72,7 +72,28 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
-    def convert(self, f):
+    def blur(self, radius, sigma):
+        """Saturate image
+
+        :param radius: radius of blur
+        :type radius: int
+        :param sigma: sigma of blur
+        :type sigma: int
+        """
+
+        if settings.DEBUG:
+            print(
+                '   Executed blur command by Imagemagick on file {0} with {1}x{2}'.
+                format(self.filename, radius, sigma))
+
+        r = subprocess.getoutput(
+            settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -blur ' + str(radius) + 'x' + str(
+                sigma) + ' \'' + self.filename + '\'')
+
+        if r and settings.DEBUG:
+            print('    Error during processing: ', r)
+
+    def convert(self, format):
         """Convert image
 
         :param format: format to convert
@@ -82,7 +103,7 @@ class Imagemagick(AbstractImageOperator):
         if settings.DEBUG:
             print(
                 '   Executed convert to {1} command by Rsvg on file {0}'.
-                format(self.filename, f))
+                format(self.filename, format))
 
         output_file = self.filename
 
