@@ -93,6 +93,26 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
+    def bright(self, percent):
+        """Bright image
+
+        :param percent: percent of brightness
+        :type percent: str
+        """
+
+        if settings.DEBUG:
+            print(
+                '   Executed brightness command by Imagemagick on file {0} with percent={1}'.
+                format(self.filename, percent))
+
+
+        r = subprocess.getoutput(
+            settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -brightness-contrast ' +
+            str(percent) + ' \'' + self.filename + '\'')
+
+        if r and settings.DEBUG:
+            print('    Error during processing: ', r)
+
     def convert(self, format):
         """Convert image
 

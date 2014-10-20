@@ -70,6 +70,12 @@ class FilterParser:
                 self.__commands.append({'command': 'blur', 'args': m.groups()})
                 continue
 
+            # Saturate command
+            m = re.compile(r'^bright([0-9-]+)$').match(c)
+            if m:
+                self.__commands.append({'command': 'bright', 'args': m.groups()})
+                continue
+
             # Convert command
             m = re.compile(r'^c(\.[A-z]+)$').match(c)
             if m:
@@ -177,6 +183,14 @@ class AbstractImageOperator:
         :type radius: int
         :param sigma: sigma of blur
         :type sigma: int
+        """
+
+    @abstractmethod
+    def bright(self, percent):
+        """Bright image
+
+        :param percent: percent of brightness
+        :type percent: int
         """
 
     @abstractmethod

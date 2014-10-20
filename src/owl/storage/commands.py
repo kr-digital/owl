@@ -72,3 +72,18 @@ class BlurImageCommand(AbstractImageCommand):
         """Execute command"""
         self.__operator.blur(*self.__args)
 
+
+class BrightImageCommand(AbstractImageCommand):
+    """Saturate image command"""
+    def __init__(self, operator, *args):
+        """Constructor
+
+        :param operator: image operator
+        :type operator: AbstractImageOperator
+        """
+        self.__operator = operator
+        self.__args = args
+
+    def execute(self):
+        """Execute command"""
+        self.__operator.bright(*self.__args)

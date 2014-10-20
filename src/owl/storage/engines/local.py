@@ -175,6 +175,8 @@ class LocalStorage(AbstractStorage):
                     processor.add_command(commands.SaturateImageCommand(operator, *c['args']))
                 elif c['command'] == 'blur':
                     processor.add_command(commands.BlurImageCommand(operator, *c['args']))
+                elif c['command'] == 'bright':
+                    processor.add_command(commands.BrightImageCommand(operator, *c['args']))
 
             # Execute all the commands
             processor.execute_commands()
