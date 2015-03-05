@@ -48,6 +48,8 @@ class Imagemagick(AbstractImageOperator):
             if r and settings.DEBUG:
                 print('    Error during processing: ', r)
 
+        AbstractImageOperator.optimize(output_file)
+
         self.set_filename(output_file)
 
     def saturate(self, percent):
@@ -72,6 +74,8 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
+        AbstractImageOperator.optimize(self.filename)
+
     def blur(self, radius, sigma):
         """Saturate image
 
@@ -93,6 +97,9 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
+
+        AbstractImageOperator.optimize(self.filename)
+
     def bright(self, percent):
         """Bright image
 
@@ -112,6 +119,8 @@ class Imagemagick(AbstractImageOperator):
 
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
+
+        AbstractImageOperator.optimize(self.filename)
 
     def convert(self, format):
         """Convert image

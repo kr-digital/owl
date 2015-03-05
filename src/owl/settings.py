@@ -3,14 +3,14 @@ DEBUG = True
 
 # List of clients tokens
 CLIENTS = {}
-CLIENTS['client'] = 'token'
+CLIENTS['domzamkad'] = '7gJpZdDmQnYNPheQJkruX2WRpxuZQsHC'
 
 # Output data format
 FORMAT = 'JSON'
 
 # Storage engine
 STORAGE_ENGINE = 'local'
-STORAGE_ENGINE_LOCAL_DATA_PATH = '/path/to/domain.name/storage/data'
+STORAGE_ENGINE_LOCAL_DATA_PATH = '/home/www/vhosts/owl/storage/data'
 
 # Storage image operator
 STORAGE_IMAGE_OPERATOR = 'imagemagick'
@@ -29,5 +29,12 @@ ALLOWED_EXTENSIONS = {
     'raster': ['png', 'jpg', 'jpeg', 'gif'],
     'vector': ['svg', 'svgz']
 }
+
+OPTIMIZERS = {
+    'jpg': 'jpegtran -progressive -copy none -optimize -outfile \'{file}\' \'{file}\'',
+    'png': 'optipng -o3 \'{file}\''
+}
+
+OPTIMIZERS['jpeg'] = OPTIMIZERS['jpg']
 
 MAX_FILESIZE = 1024 * 1024 * 10

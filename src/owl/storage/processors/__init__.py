@@ -2,8 +2,10 @@
     Owl image processors
 """
 from abc import ABCMeta, abstractmethod
+from owl import settings
 import re
 import os
+import subprocess
 
 
 def get_image_operator(f, t='imagemagick'):
@@ -200,3 +202,12 @@ class AbstractImageOperator:
         :param format: convert to format
         :type format: String
         """
+
+    @staticmethod
+    def optimize(file):
+        ext = os.path.splitext(file)[1].replace('.','').lower()
+
+        if ext in settings.OPTIMIZERS:
+            return subprocess.getoutput(settings.OPTIMIZERS[ext].format(file=file))
+
+        return None

@@ -3,7 +3,7 @@
 command=$1
 
 if [ $command == '--help' ]; then
-	echo 'Availble commands:';
+	echo 'Available commands:';
 	echo ' start';
 	echo ' stop';
 	echo ' reload';
