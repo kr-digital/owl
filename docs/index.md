@@ -7,6 +7,10 @@
 * Python >=3.4
 * Imagemagick
 * Librsvg
+  
+Оптимизаторы изображений:
+* jpegtran
+* optipng
 
 ## Nginx
 
