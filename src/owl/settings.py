@@ -32,7 +32,7 @@ ALLOWED_EXTENSIONS = {
 
 OPTIMIZERS = {
     'jpg': { 'enabled': True, 'options': '-progressive -copy none -optimize'},
-    'png': { 'enabled': True, 'options': '-o3' }
+    'png': { 'enabled': True, 'options': '-o3 -nc -nb -full -quiet' }
 }
 
 MAX_FILESIZE = 1024 * 1024 * 10

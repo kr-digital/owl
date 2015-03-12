@@ -204,6 +204,7 @@ class AbstractImageOperator:
         """
 
 class Optimizer:
+    """Image optimizer"""
 
     commands = {
         'jpg': 'jpegtran {options} -outfile \'{file}\' \'{file}\'',
@@ -212,6 +213,13 @@ class Optimizer:
 
     @staticmethod
     def optimize(file):
+        """
+        Run optimize command on specific file
+
+        :param file: path to file
+        :type file: String
+        """
+
         ext = os.path.splitext(file)[1].replace('.','').lower()
 
         if ext == 'jpeg':
