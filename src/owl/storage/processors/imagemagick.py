@@ -2,6 +2,7 @@
     Owl imagemagick processor
 """
 from owl.storage.processors import AbstractImageOperator
+from owl.storage.processors import Optimizer
 from owl import settings
 import subprocess
 
@@ -48,7 +49,7 @@ class Imagemagick(AbstractImageOperator):
             if r and settings.DEBUG:
                 print('    Error during processing: ', r)
 
-        AbstractImageOperator.optimize(output_file)
+        Optimizer.optimize(output_file)
 
         self.set_filename(output_file)
 
@@ -74,7 +75,7 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
-        AbstractImageOperator.optimize(self.filename)
+        Optimizer.optimize(self.filename)
 
     def blur(self, radius, sigma):
         """Saturate image
@@ -98,7 +99,7 @@ class Imagemagick(AbstractImageOperator):
             print('    Error during processing: ', r)
 
 
-        AbstractImageOperator.optimize(self.filename)
+        Optimizer.optimize(self.filename)
 
     def bright(self, percent):
         """Bright image
@@ -120,7 +121,7 @@ class Imagemagick(AbstractImageOperator):
         if r and settings.DEBUG:
             print('    Error during processing: ', r)
 
-        AbstractImageOperator.optimize(self.filename)
+        Optimizer.optimize(self.filename)
 
     def convert(self, format):
         """Convert image
@@ -131,7 +132,7 @@ class Imagemagick(AbstractImageOperator):
 
         if settings.DEBUG:
             print(
-                '   Executed convert to {1} command by Rsvg on file {0}'.
+                '   Executed convert to {1} command by Convert on file {0}'.
                 format(self.filename, format))
 
         output_file = self.filename

@@ -50,7 +50,7 @@ class Rsvg(AbstractImageOperator):
         self.set_filename(output_file)
 
     def create_tmp_file(self):
-        ''' Creates a temporary file for perorming modifications
+        ''' Creates a temporary file for performing modifications
         '''
 
         tmp_filename = 'tmp_' + os.path.basename(self.filename)

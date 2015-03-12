@@ -203,11 +203,31 @@ class AbstractImageOperator:
         :type format: String
         """
 
+class Optimizer:
+
+    commands = {
+        'jpg': 'jpegtran {options} -outfile \'{file}\' \'{file}\'',
+        'png': 'optipng {options} \'{file}\''
+    }
+
     @staticmethod
     def optimize(file):
         ext = os.path.splitext(file)[1].replace('.','').lower()
 
-        if ext in settings.OPTIMIZERS:
-            return subprocess.getoutput(settings.OPTIMIZERS[ext].format(file=file))
+        if ext == 'jpeg':
+            ext = 'jpg'
+
+        if ext in Optimizer.commands:
+            command = Optimizer.commands[ext]
+            optimize_settings = settings.OPTIMIZERS[ext]
+
+            if 'options' not in optimize_settings:
+                optimize_settings['options'] = ''
+
+            if optimize_settings['enabled']:
+                print(
+                '   Optimizing {0}'.
+                format(file))
+                return subprocess.getoutput(command.format(options=optimize_settings['options'], file=file))
 
         return None

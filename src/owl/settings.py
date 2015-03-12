@@ -31,10 +31,8 @@ ALLOWED_EXTENSIONS = {
 }
 
 OPTIMIZERS = {
-    'jpg': 'jpegtran -progressive -copy none -optimize -outfile \'{file}\' \'{file}\'',
-    'png': 'optipng -o3 \'{file}\''
+    'jpg': { 'enabled': True, 'options': '-progressive -copy none -optimize'},
+    'png': { 'enabled': True, 'options': '-o3' }
 }
-
-OPTIMIZERS['jpeg'] = OPTIMIZERS['jpg']
 
 MAX_FILESIZE = 1024 * 1024 * 10
