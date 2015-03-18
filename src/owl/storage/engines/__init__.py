@@ -53,11 +53,13 @@ class AbstractStorage:
         del self.__client
 
     @abstractmethod
-    def put_file(self, file):
+    def put_file(self, file, watermark=False):
         """Put file into storage
 
         :param file: file to save
         :type file: file
+        :param watermark: apply watermark
+        :type watermark: bool
         :return: owl.Answer
         """
 

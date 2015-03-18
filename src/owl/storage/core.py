@@ -52,11 +52,13 @@ class Core:
 
         return True
 
-    def put_file(self, file):
+    def put_file(self, file, watermark=False):
         """Put file to storage
 
         :param file: file to save
         :type file: file
+        :param watermark: apply watermark
+        :type watermark: bool
         :return: owl.Answer
         """
         # Check file extension
@@ -79,7 +81,7 @@ class Core:
         # Put file
         e = engines.get_engine(settings.STORAGE_ENGINE)
         e.client = self.__client
-        return e.put_file(file)
+        return e.put_file(file, watermark)
 
     def get_files(self, files, force=False):
         """Get files from storage

@@ -141,3 +141,31 @@ class Imagemagick(AbstractImageOperator):
             settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' ' + ' \'' + output_file + '\'')
 
         self.set_filename(output_file)
+
+    def watermark(self, watermark_file):
+        """Apply watermark to image
+
+        :param watermark_file: path to watermark file
+        :type watermark_file: String
+        """
+
+        # Get image size
+        size = subprocess.getoutput(
+            settings.STORAGE_IMAGE_OPERATOR_IDENTIFY_PATH + ' -quiet -format "%wx%h" \'' + self.filename + '\'')
+
+        if settings.DEBUG:
+            print(
+                '   Executed watermark {1} of size {2} file by Composite on file {0}'.
+                format(self.filename, watermark_file, size))
+            print(
+                settings.STORAGE_IMAGE_OPERATOR_COMPOSE_PATH + ' \( \'' + watermark_file + '\' -resize ' + size +
+                ' \) \'' + self.filename + '\' -gravity ' + settings.WATERMARK['position'] + ' \'' +
+                self.filename + '\'')
+
+        output_file = self.filename
+
+        r = subprocess.getoutput(
+            settings.STORAGE_IMAGE_OPERATOR_COMPOSE_PATH + ' \( \'' + watermark_file + '\' -resize ' + size + ' \) \'' + self.filename + '\' -gravity ' +
+            settings.WATERMARK['position'] + ' \'' + self.filename + '\'')
+
+        self.set_filename(output_file)

@@ -7,8 +7,19 @@ import subprocess
 from shutil import copyfile
 import os
 
+
 class Rsvg(AbstractImageOperator):
-    #def saturate(self, percent):
+    def watermark(self, position):
+        pass
+
+    def bright(self, percent):
+        pass
+
+    def saturate(self, percent):
+        pass
+
+    def blur(self, radius, sigma):
+        pass
 
     def convert(self, format):
         if settings.DEBUG:
@@ -50,8 +61,8 @@ class Rsvg(AbstractImageOperator):
         self.set_filename(output_file)
 
     def create_tmp_file(self):
-        ''' Creates a temporary file for performing modifications
-        '''
+        """ Creates a temporary file for performing modifications
+        """
 
         tmp_filename = 'tmp_' + os.path.basename(self.filename)
 

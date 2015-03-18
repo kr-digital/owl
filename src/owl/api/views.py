@@ -1,5 +1,5 @@
 from flask import render_template, request
-from owl import app, core, error_codes
+from owl import app, core, error_codes, settings
 from owl.api import authenticate, make_answer
 from owl.answer import Answer
 import resource
@@ -29,7 +29,19 @@ def api_files():
 
 #        print('Memory at put: ', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024*1024), 'Mb')
 
-        return make_answer(core.put_file(file))
+        # Check for watermark option
+        if settings.WATERMARK['enabled']:
+            try:
+                if str(request.values['watermark']) == '1':
+                    watermark = True
+                else:
+                    watermark = False
+            except KeyError:
+                watermark = False
+        else:
+            watermark = False
+
+        return make_answer(core.put_file(file, watermark))
     elif request.method == 'DELETE':
         # Check for request
         try:

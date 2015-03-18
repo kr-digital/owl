@@ -15,11 +15,13 @@ from shutil import copyfileobj, copyfile, rmtree
 class LocalStorage(AbstractStorage):
     """Local storage"""
 
-    def put_file(self, file):
+    def put_file(self, file, watermark=False):
         """Put file into storage
 
         :param file: file to save
         :type file: file
+        :param watermark: apply watermark
+        :type watermark: bool
         :return: owl.Answer
         """
         # Build path
@@ -55,11 +57,18 @@ class LocalStorage(AbstractStorage):
             i += 1
 
         # Open file
-        dst = open(dst, 'wb')
+        dst_file = open(dst, 'wb')
         try:
-            copyfileobj(file, dst, 16384)
+            copyfileobj(file, dst_file, 16384)
         finally:
-            dst.close()
+            dst_file.close()
+
+        # Apply watermark
+        if watermark:
+            operator = processors.get_image_operator(dst, settings.STORAGE_IMAGE_OPERATOR)
+            watermark_file = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client, settings.WATERMARK['file'])
+            operator.watermark(watermark_file)
+
 
         # TODO: Check for filesize after copying
 

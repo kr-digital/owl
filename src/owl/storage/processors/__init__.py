@@ -203,6 +203,15 @@ class AbstractImageOperator:
         :type format: String
         """
 
+    @abstractmethod
+    def watermark(self, watermark_file):
+        """Apply watermark to image
+
+        :param watermark_file: path to watermark file
+        :type watermark_file: String
+        """
+
+
 class Optimizer:
     """Image optimizer"""
 

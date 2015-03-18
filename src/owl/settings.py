@@ -15,6 +15,8 @@ STORAGE_ENGINE_LOCAL_DATA_PATH = '/home/www/vhosts/owl/storage/data'
 # Storage image operator
 STORAGE_IMAGE_OPERATOR = 'imagemagick'
 STORAGE_IMAGE_OPERATOR_CONVERT_PATH = 'convert'
+STORAGE_IMAGE_OPERATOR_COMPOSE_PATH = 'composite'
+STORAGE_IMAGE_OPERATOR_IDENTIFY_PATH = 'identify'
 
 # Storage vector graphic operator
 STORAGE_VECTOR_OPERATOR = 'librsvg'
@@ -33,6 +35,12 @@ ALLOWED_EXTENSIONS = {
 OPTIMIZERS = {
     'jpg': { 'enabled': True, 'options': '-progressive -copy none -optimize'},
     'png': { 'enabled': True, 'options': '-o3 -nc -nb -full -quiet' }
+}
+
+WATERMARK = {
+    'enabled': False,
+    'file': 'watermark.png',
+    'position': 'Center'
 }
 
 MAX_FILESIZE = 1024 * 1024 * 10
