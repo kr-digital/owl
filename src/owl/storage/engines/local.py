@@ -9,6 +9,7 @@ from owl.storage.engines import AbstractStorage
 from owl import settings, error_codes
 from owl.answer import Answer
 from owl.storage import processors, commands
+from owl.storage.processors import Optimizer
 from shutil import copyfileobj, copyfile, rmtree
 
 
@@ -197,6 +198,8 @@ class LocalStorage(AbstractStorage):
 
             # Execute all the commands
             processor.execute_commands()
+
+            Optimizer.optimize(operator.filename)
 
             a.set_result(True)
             a.set_output_file(operator.a_filename)
