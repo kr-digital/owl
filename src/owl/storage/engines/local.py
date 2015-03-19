@@ -65,6 +65,14 @@ class LocalStorage(AbstractStorage):
 
         # Apply watermark
         if watermark:
+			# Save original
+			file.seek(0)
+			orig_file = open(dst + '.orig', 'wb')
+			try:
+				copyfileobj(file, orig_file, 16384)
+			finally:
+				orig_file.close()
+
             operator = processors.get_image_operator(dst, settings.STORAGE_IMAGE_OPERATOR)
             watermark_file = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client, settings.WATERMARK['file'])
             operator.watermark(watermark_file)
