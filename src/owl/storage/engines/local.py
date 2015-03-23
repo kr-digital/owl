@@ -195,6 +195,9 @@ class LocalStorage(AbstractStorage):
                     processor.add_command(commands.BlurImageCommand(operator, *c['args']))
                 elif c['command'] == 'bright':
                     processor.add_command(commands.BrightImageCommand(operator, *c['args']))
+                elif c['command'] == 'watermark':
+                    watermark_file = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client, settings.WATERMARK['file'])
+                    processor.add_command(commands.WatermarkImageCommand(operator, watermark_file))
 
             # Execute all the commands
             processor.execute_commands()

@@ -83,6 +83,11 @@ class FilterParser:
             if m:
                 self.__commands.append({'command': 'convert', 'args': m.groups()})
 
+            # Watermark command
+            m = re.compile(r'^wm$').match(c)
+            if m:
+                self.__commands.append({'command': 'watermark', 'args': []})
+
     def get_commands(self):
         """Get all the commands
 
