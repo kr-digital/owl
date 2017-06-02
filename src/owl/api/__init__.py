@@ -11,13 +11,6 @@ from owl.answer import Answer
 def authenticate(f):
     """Do an authentication decorator"""
     def wrapper(*args, **kwargs):
-        try:
-            client = request.headers['client']
-        except KeyError:
-            a = Answer()
-            a.set_result(False)
-            a.set_err_code(error_codes.AUTH_NO_CLIENT)
-            return make_answer(a)
 
         try:
             token = request.headers['token']
@@ -31,6 +24,14 @@ def authenticate(f):
             a = Answer()
             a.set_result(False)
             a.set_err_code(error_codes.AUTH_WRONG_CREDENTIALS)
+            return make_answer(a)
+
+        try:
+            client = request.headers['client']
+        except KeyError:
+            a = Answer()
+            a.set_result(False)
+            a.set_err_code(error_codes.AUTH_NO_CLIENT)
             return make_answer(a)
 
         return f(*args, **kwargs)
