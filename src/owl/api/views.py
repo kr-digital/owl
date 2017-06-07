@@ -15,7 +15,7 @@ def api():
 @app.route('/api/get')
 def api_get():
     path = request.values['r'].split('/')
-    if len(path) != 6:
+    if len(path) != 7:
         abort(404)
 
     client = path[1]
