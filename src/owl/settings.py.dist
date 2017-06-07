@@ -3,13 +3,14 @@ DEBUG = True
 
 # List of clients tokens
 CLIENTS = {}
-CLIENTS['domzamkad'] = '7gJpZdDmQnYNPheQJkruX2WRpxuZQsHC'
+CLIENTS['foo'] = 'bar'
 
 # Output data format
 FORMAT = 'JSON'
 
 # Storage engine
 STORAGE_ENGINE = 'local'
+STORAGE_NAMING_STRATEGY = 'uuid'
 STORAGE_ENGINE_LOCAL_DATA_PATH = '/home/www/vhosts/owl/storage/data'
 
 # Storage image operator

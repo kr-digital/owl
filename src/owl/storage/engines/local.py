@@ -3,6 +3,7 @@
 """
 import os
 import re
+import uuid
 import hashlib
 from owl.storage.core import Core
 from owl.storage.engines import AbstractStorage
@@ -46,7 +47,11 @@ class LocalStorage(AbstractStorage):
             os.mkdir(storage_dir)
 
         # Prepare filename
-        file.name = self.prepare_filename(file.name)
+        if settings.STORAGE_NAMING_STRATEGY == 'uuid':
+            ext = os.path.splitext(file.name)[1].lower()
+            file.name = str(uuid.uuid4()) + ext
+        else:
+            file.name = self.prepare_filename(file.name)
 
         # Check filename for duplicates
         filename = file.name
