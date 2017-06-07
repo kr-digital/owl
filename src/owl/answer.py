@@ -39,6 +39,13 @@ class Answer:
         """
         self.__output_file = value
 
+    def get_output_file(self):
+        """Get output file
+
+        :return: str
+        """
+        return self.__output_file
+
     def set_output_filesize(self, value):
         """Set filesize
 

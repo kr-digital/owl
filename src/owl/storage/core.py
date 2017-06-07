@@ -52,6 +52,13 @@ class Core:
 
         return True
 
+    def set_client(self, client):
+        """Set the client
+        :param client: API client
+        :type client: str
+        """
+        self.__client = client
+
     def put_file(self, file, watermark=False):
         """Put file to storage
 
@@ -232,3 +239,15 @@ class Core:
         e.client = self.__client
 
         return e.del_file(file)
+
+    def get_real_file_path(self, file):
+        """Get real file path
+
+        :param file: filename at storage
+        :type file: str
+        :return: Response
+        """
+        e = engines.get_engine(settings.STORAGE_ENGINE)
+        e.client = self.__client
+
+        return e.get_real_file_path(file)

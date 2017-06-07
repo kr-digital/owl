@@ -1,14 +1,40 @@
-from flask import render_template, request
+from flask import render_template, request, send_file, abort
 from owl import app, core, error_codes, settings
 from owl.api import authenticate, make_answer
 from owl.answer import Answer
 import resource
 import gc
+import os
 
 
 @app.route('/api')
 def api():
     return render_template('api/index.html')
+
+
+@app.route('/api/get')
+def api_get():
+    path = request.values['r'].split('/')
+    if len(path) != 6:
+        abort(404)
+
+    client = path[1]
+    file = path[3] + '/' + path[4] + '/' + path[5]
+    filters = os.path.splitext(path[6])[0]
+
+    core.set_client(client)
+    answer = core.get_files([(file, filters)], False)
+    file = answer[0].get_output_file()
+
+    if not file:
+        abort(404)
+
+    file_path = core.get_real_file_path(file)
+
+    if not file_path:
+        abort(404)
+
+    return send_file(file_path)
 
 
 @app.route('/api/files', methods=['GET', 'POST', 'DELETE'])

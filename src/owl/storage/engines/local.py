@@ -248,6 +248,23 @@ class LocalStorage(AbstractStorage):
         a.set_result(True)
         return a
 
+    def get_real_file_path(self, filename):
+        """Send file to client
+
+        :param filename: filename at storage
+        :type filename: str
+        :return: Response
+        """
+        # Storage dir
+        storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
+
+        # Result file
+        file_path = os.path.join(storage_dir, filename)
+        if not os.path.exists(file_path):
+            file_path = None
+
+        return file_path
+
     def build_file_result_path(self, file_dir, filters, filename, commands):
         """ Build path to result file
         :param file_dir: file directory

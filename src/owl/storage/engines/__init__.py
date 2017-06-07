@@ -85,6 +85,15 @@ class AbstractStorage:
         :return: owl.Answer
         """
 
+    @abstractmethod
+    def get_real_file_path(self, name):
+        """Get real file path
+
+        :param name: filename at storage
+        :type name: str
+        :return: Response
+        """
+
     def prepare_filename(self, filename):
         """Prepare filename by removing and replacing wrong characters
 
