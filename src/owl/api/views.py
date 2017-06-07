@@ -23,7 +23,7 @@ def api_get():
     filters = os.path.splitext(path[6])[0]
 
     core.set_client(client)
-    answer = core.get_files([(file, filters)], False)
+    answer = core.get_files([(file, filters.replace('_', '|'))], False)
     file = answer[0].get_output_file()
 
     if not file:
