@@ -47,11 +47,13 @@ class LocalStorage(AbstractStorage):
             os.mkdir(storage_dir)
 
         # Prepare filename
+        ext = os.path.splitext(file.name)[1].lower()
         if settings.STORAGE_NAMING_STRATEGY == 'uuid':
-            ext = os.path.splitext(file.name)[1].lower()
             file.name = str(uuid.uuid4()) + ext
         else:
             file.name = self.prepare_filename(file.name)
+            if '.' + file.name == ext:
+                file.name = str(uuid.uuid4()) + ext
 
         # Check filename for duplicates
         filename = file.name
