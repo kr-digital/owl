@@ -54,7 +54,6 @@ class S3Storage(AbstractStorage):
         # Check filename for duplicates
         filename = file.name
         s3_items = self.__s3.list_objects(Bucket=self.client, Prefix=os.path.join(md5[0], md5[1], filename))
-        print(s3_items)
         i = 1
         while s3_items.get('Contents') is not None:
             filename = str(i) + '_' + file.name
@@ -100,8 +99,6 @@ class S3Storage(AbstractStorage):
 
         # Normalize filename
         filename = self.normalize_filename(filename)
-
-        print(tempfile.gettempdir())
 
         # Check filename
         filepath = filename.split('/')
