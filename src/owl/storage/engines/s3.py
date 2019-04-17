@@ -13,7 +13,7 @@ from owl import settings, error_codes
 from owl.answer import Answer
 from owl.storage import processors, commands
 from owl.storage.processors import Optimizer
-from shutil import copyfileobj, copyfile, rmtree
+from shutil import copyfileobj
 
 
 class S3Storage(AbstractStorage):
