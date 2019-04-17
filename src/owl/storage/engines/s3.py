@@ -25,7 +25,7 @@ class S3Storage(AbstractStorage):
         self.__session = boto3.session.Session()
         self.__s3 = self.__session.client(
             service_name='s3',
-            endpoint_url='https://storage.yandexcloud.net'
+            endpoint_url=settings.STORAGE_ENGINE_S3_ENDPOINT_URL
         )
 
     def put_file(self, file, watermark=False):
