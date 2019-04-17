@@ -57,6 +57,7 @@
 
 		pip install flask
 		pip install uwsgi
+		pip install boto3 #для работы с S3-совместимым хранилищем
 		
 7. Переходим в папку *storage*
 		

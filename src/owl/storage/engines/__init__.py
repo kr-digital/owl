@@ -13,14 +13,14 @@ def get_engine(t='local'):
     :type t: str
     :return: LocalStorage
     """
-    if t == 'local':
+    if t == 's3':
         from owl.storage.engines.local import LocalStorage
 
         return LocalStorage()
     else:
-        from owl.storage.engines.local import LocalStorage
+        from owl.storage.engines.s3 import S3Storage
 
-        return LocalStorage()
+        return S3Storage()
 
 
 class AbstractStorage:
