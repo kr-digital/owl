@@ -1,6 +1,38 @@
 # Установка
 
-## Системные требования
+## Установка через docker
+
+```
+    docker run -d --name owl -p 8089:80 -v /path/to/owl_data:/var/data -e "APP_CLIENT=client" -e "APP_TOKEN=secret" gitlab.kr.digital:4567/kr/owl:latest
+```
+
+## Установка через docker-compose
+
+
+Создаём файл `docker-compose.yml`:
+```
+version: '3.4'
+
+services:
+  owl:
+    restart: always
+    image: gitlab.kr.digital:4567/kr/owl:latest
+    ports:
+      - "8089:80"
+    volumes:
+      - /path/to/owl_data:/var/data
+    environment:
+      - APP_CLIENT=client
+      - APP_TOKEN=secret
+
+```
+
+Запуск: `docker-compose up -d`
+Останов: `docker-compose stop`
+
+## Нативная установка
+
+### Системные требования
 
 * Linux-сервер (предпочтительно Debian или Ubuntu)
 * Nginx >=1.6
@@ -12,7 +44,7 @@
 * jpegtran
 * optipng
 
-## Nginx
+### Nginx
 
 Конфигурация хоста должна выглядеть так:
 
@@ -34,39 +66,34 @@
     	}
     }
 
-## Owl
+### Owl
 
-1. Полуачаем репозиторий
-
-		git clone git@git.k-r-w.ru:OwlStorage.git
-
-
-2. Создаем среду, папку под хранилище
+1. Создаем среду, папку под хранилище
 
 		virtualenv domain.name
 		cd domain.name
 		mkdir storage
 
-3. Активируем среду
+2. Активируем среду
 
 		source bin/activate
 
-4. Копируем в папку *storage* содержимое папки *src* репозитория
-5. Прописываем верные пути в файле конфигурации *config/uwsgi.ini* и *owl/settings.py*
-6. Устанавливаем flask и uwsgi
+3. Копируем в папку *storage* содержимое папки *src* репозитория
+4. Прописываем верные пути в файле конфигурации *config/uwsgi.ini* и *owl/settings.py*
+5. Устанавливаем flask и uwsgi
 
 		pip install flask
 		pip install uwsgi
 		pip install boto3 #для работы с S3-совместимым хранилищем
 		
-7. Переходим в папку *storage*
+6. Переходим в папку *storage*
 		
 		cd ./storage
 		
-8. Создаём папку *data*
+7. Создаём папку *data*
 
 		mkdir data
 
-9. Запускаем сервер
+8. Запускаем сервер
 
 		./scripts/server start

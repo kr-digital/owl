@@ -27,7 +27,10 @@ class LocalStorage(AbstractStorage):
         :return: owl.Answer
         """
         # Build path
-        storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
+        storage_dir = settings.STORAGE_ENGINE_LOCAL_DATA_PATH
+        if settings.STORAGE_ENGINE_LOCAL_DATA_PATH_STRATEGY == 'multiple_dirs':
+            storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
+
         if not os.path.exists(storage_dir):
             os.mkdir(storage_dir)
 
@@ -121,7 +124,9 @@ class LocalStorage(AbstractStorage):
             return a
 
         # Storage dir
-        storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
+        storage_dir = settings.STORAGE_ENGINE_LOCAL_DATA_PATH
+        if settings.STORAGE_ENGINE_LOCAL_DATA_PATH_STRATEGY == 'multiple_dirs':
+            storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
 
         # Original file
         file_original = os.path.join(storage_dir, filename)
@@ -228,7 +233,9 @@ class LocalStorage(AbstractStorage):
         :return: owl.Answer
         """
         # Storage dir
-        storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
+        storage_dir = settings.STORAGE_ENGINE_LOCAL_DATA_PATH
+        if settings.STORAGE_ENGINE_LOCAL_DATA_PATH_STRATEGY == 'multiple_dirs':
+            storage_dir = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client)
 
         # Original file
         file_original = os.path.join(storage_dir, filename)
