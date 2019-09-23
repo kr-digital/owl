@@ -201,8 +201,10 @@ class S3Storage(AbstractStorage):
 
         list_to_delete = [{'Key': filename}]
 
-        for key in self.__s3.list_objects(Bucket=self.client, Prefix=os.path.join('cache', filename))['Contents']:
-            list_to_delete.append({'Key': key['Key']})
+        s3_items = self.__s3.list_objects(Bucket=self.client, Prefix=os.path.join('cache', filename))
+        while s3_items.get('Contents') is not None:
+            for key in s3_items.get('Contents'):
+                list_to_delete.append({'Key': key['Key']})
 
         self.__s3.delete_objects(Bucket=self.client, Delete={'Objects': list_to_delete})
 
