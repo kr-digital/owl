@@ -28,6 +28,7 @@ services:
 ```
 
 Запуск: `docker-compose up -d`
+
 Останов: `docker-compose stop`
 
 ## Нативная установка
