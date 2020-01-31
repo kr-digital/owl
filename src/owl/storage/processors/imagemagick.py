@@ -34,7 +34,7 @@ class Imagemagick(AbstractImageOperator):
 
         if crop == 'fit':
             r = subprocess.getoutput(
-                settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -auto-orient -resize ' + width +
+                settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -auto-orient -resize\> ' + width +
                 'x' + height + ' \'' + output_file + '\'')
 
             if r and settings.DEBUG:
