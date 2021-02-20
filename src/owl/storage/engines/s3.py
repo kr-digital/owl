@@ -86,6 +86,9 @@ class S3Storage(AbstractStorage):
         # Upload to S3
         self.__s3.upload_fileobj(file, self.client, os.path.join(md5[0], md5[1], filename))
 
+        # Delete tmp_file
+        file.close()
+
         a = Answer()
         a.set_result(True)
         a.set_output_file(md5[0] + '/' + md5[1] + '/' + filename)
