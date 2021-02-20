@@ -62,14 +62,13 @@ class S3Storage(AbstractStorage):
 
         # Process original
         if settings.STORAGE_PROCESS_ORIGINALS_FILTER:
-            # Save original
-            file.seek(0)
-            try:
-                copyfileobj(file, file, 16384)
-            finally:
-                file.close()
+            tmp_file = tempfile.NamedTemporaryFile()
+            tmp_file.write(file.read())
+            tmp_file.seek(0)
 
-            self.optimize_file(file, settings.STORAGE_PROCESS_ORIGINALS_FILTER)
+            self.optimize_file(tmp_file.name, settings.STORAGE_PROCESS_ORIGINALS_FILTER)
+
+            file = tmp_file
 
         # Apply watermark
         if watermark:
