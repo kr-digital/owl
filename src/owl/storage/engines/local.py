@@ -74,6 +74,10 @@ class LocalStorage(AbstractStorage):
         finally:
             dst_file.close()
 
+        # Process original
+        if settings.STORAGE_PROCESS_ORIGINALS_FILTER:
+            self.optimize_file(dst, settings.STORAGE_PROCESS_ORIGINALS_FILTER)
+
         # Apply watermark
         if watermark:
             # Save original

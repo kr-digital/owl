@@ -4,6 +4,9 @@
 from abc import ABCMeta, abstractmethod
 import os
 import re
+from owl import settings
+from owl.storage import processors, commands
+from owl.storage.processors import Optimizer
 
 
 def get_engine(t='local'):
@@ -128,7 +131,6 @@ class AbstractStorage:
         from unicodedata import normalize
         return str(normalize('NFKD', filename).encode('ascii', 'ignore').decode('ascii'))
 
-
     @staticmethod
     def transliterate_filename(filename):
         """Transliterate filename
@@ -222,13 +224,52 @@ class AbstractStorage:
 
         return filename
 
-    def parse_filters(self, filters):
-        """Parse transformation filters
+    def optimize_file(self, filepath, filters):
+        """Optimize file
 
-        :param filters: transformation filters string
+        :param filepath: filepath
+        :type filepath: str
+        :param filters: string filters
         :type filters: str
-        :return: dict
+        :return: void
         """
-        parsed_filters = {}
-        return parsed_filters
 
+        # Parse filters
+        parser = processors.FilterParser(filters)
+
+        # Define operator to use
+        from owl import Core
+        if Core.is_vector(filepath):
+            op = settings.STORAGE_VECTOR_OPERATOR
+        else:
+            op = settings.STORAGE_IMAGE_OPERATOR
+
+        # Get image operator
+        operator = processors.get_image_operator(filepath, op)
+
+        # Get image processor
+        processor = processors.ImageProcessor()
+
+        # Add commands
+        for c in parser.get_commands():
+            if settings.DEBUG:
+                print('  Added command {0} on file {1} with args {2}'.format(c['command'], filepath, c['args']))
+            if c['command'] == 'resample':
+                processor.add_command(commands.ResampleImageCommand(operator, *c['args']))
+            elif c['command'] == 'convert':
+                processor.add_command(commands.ConvertImageCommand(operator, *c['args']))
+            elif c['command'] == 'saturate':
+                processor.add_command(commands.SaturateImageCommand(operator, *c['args']))
+            elif c['command'] == 'blur':
+                processor.add_command(commands.BlurImageCommand(operator, *c['args']))
+            elif c['command'] == 'bright':
+                processor.add_command(commands.BrightImageCommand(operator, *c['args']))
+            elif c['command'] == 'watermark':
+                watermark_file = os.path.join(settings.STORAGE_ENGINE_LOCAL_DATA_PATH, self.client,
+                                              settings.WATERMARK['file'])
+                processor.add_command(commands.WatermarkImageCommand(operator, watermark_file))
+
+        # Execute all the commands
+        processor.execute_commands()
+
+        Optimizer.optimize(operator.filename)

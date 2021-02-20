@@ -14,6 +14,7 @@ STORAGE_NAMING_STRATEGY = 'uuid'
 STORAGE_ENGINE_LOCAL_DATA_PATH = '/home/www/vhosts/owl/storage/data'
 STORAGE_ENGINE_LOCAL_DATA_PATH_STRATEGY = 'multiple_dirs'
 STORAGE_ENGINE_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
+STORAGE_PROCESS_ORIGINALS_FILTER = 'w1920h1080'
 
 # Storage image operator
 STORAGE_IMAGE_OPERATOR = 'imagemagick'

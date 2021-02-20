@@ -60,6 +60,17 @@ class S3Storage(AbstractStorage):
             s3_items = self.__s3.list_objects(Bucket=self.client, Prefix=os.path.join(md5[0], md5[1], filename))
             i += 1
 
+        # Process original
+        if settings.STORAGE_PROCESS_ORIGINALS_FILTER:
+            # Save original
+            file.seek(0)
+            try:
+                copyfileobj(file, file, 16384)
+            finally:
+                file.close()
+
+            self.optimize_file(file, settings.STORAGE_PROCESS_ORIGINALS_FILTER)
+
         # Apply watermark
         if watermark:
             # Save original
