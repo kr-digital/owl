@@ -18,7 +18,7 @@ def api_get():
     if len(path) != 7:
         abort(404)
 
-    client = path[1]
+    client = path[0]
     file = path[3] + '/' + path[4] + '/' + path[5]
     filters = os.path.splitext(path[6])[0]
 
@@ -35,7 +35,6 @@ def api_get():
         abort(404)
 
     return send_file(file_path)
-
 
 @app.route('/api/files', methods=['GET', 'POST', 'DELETE'])
 @authenticate
