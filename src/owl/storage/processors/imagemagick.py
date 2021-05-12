@@ -156,7 +156,7 @@ class Imagemagick(AbstractImageOperator):
         output_file = self.filename
 
         r = subprocess.getoutput(
-            settings.STORAGE_IMAGE_OPERATOR_COMPOSE_PATH + ' \( \'' + watermark_file + '\' -resize ' + size + ' \) \'' +
+            settings.STORAGE_IMAGE_OPERATOR_COMPOSE_PATH + ' \( \'' + watermark_file + '\'' + (' -resize ' + size if settings.WATERMARK['resize'] else '') + ' \) \'' +
             self.filename + '\' -gravity ' + settings.WATERMARK['position'] + ' \'' + self.filename + '\'')
 
         self.set_filename(output_file)

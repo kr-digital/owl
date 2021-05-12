@@ -44,7 +44,8 @@ OPTIMIZERS = {
 WATERMARK = {
     'enabled': False,
     'file': 'watermark.png',
-    'position': 'Center'
+    'position': 'Center',
+    'resize': False
 }
 
 MAX_FILESIZE = 1024 * 1024 * 10
