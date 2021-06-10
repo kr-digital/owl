@@ -141,7 +141,7 @@ class Imagemagick(AbstractImageOperator):
 
         # Auto orient image
         subprocess.getoutput(
-            settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -auto-orient \'' +
+            settings.STORAGE_IMAGE_OPERATOR_CONVERT_PATH + ' \'' + self.filename + '\' -auto-orient -quality 95 \'' +
             self.filename + '\'')
 
         # Get image size
