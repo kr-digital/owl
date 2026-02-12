@@ -1,79 +1,75 @@
-# Авторизация
+## API Documentation
 
-Авторизация осуществляется путем передачи параметров *client* и *token* в заголовке HTTP-запроса. Набор допустимых пар
-client-token задается в файле конфигурации *owl/settings.py*
+### Authorization
 
-# Загрузка файла
+Authorization is performed by passing *client* and *token* parameters in the HTTP request header. The set of valid client-token pairs is defined in the *owl/settings.py* configuration file.
 
-Запрос:
+### File Upload
 
-		URL: /api/files
-		Method: POST
+**Request:**
+* URL: `/api/files`
+* Method: `POST`
 
-Параметры:
+**Parameters:**
+* `file` — file to be uploaded
+* `watermark` — optional (1/0), default is 0. Determines whether to apply a watermark
 
-		file — отправляемый файл
-		watermark — (1/0, необязательный, по-умолчанию 0) накладывать ли водяной знак
+**Response:**
+```json
+{
+    "output_file": "9/6/4.jpeg",
+    "result": true
+}
+```
 
-Ответ:
+### File Retrieval
 
-		{
-			output_file: "9/6/4.jpeg"
-			result: true
-		}
+**Request:**
+* URL: `/api/files`
+* Method: `GET`
 
-# Получение файлов
+**Parameters:**
+* `r` — string containing a list of requested files with filters separated by commas
+    * Example: `8/0/4.jpeg:w50h70,c/d/test__Kopiya_4.jpeg:w150h150fill|sat60`
+    * Filters start after the colon following the file name
+    * Different filters are separated by vertical bars
+* `force` — optional (1/0), default is 0. Determines whether to clear cached images before creating new ones
 
-Запрос:
+**Response:**
+```json
+{
+    "0": {
+        "request_filters": "w50h70",
+        "request_file": "8/0/4.jpeg",
+        "result": false,
+        "err_code": 303
+    },
+    "1": {
+        "request_filters": "w150h150fill|sat60",
+        "request_file": "c/d/test__Kopiya_4.jpeg",
+        "result": true,
+        "output_filesize": 8747,
+        "output_file": "cache/c/d/test__Kopiya_4.jpeg/w150h150fill|sat60.jpeg"
+    }
+}
+```
 
-		URL: /api/files
-		Method: GET
+### File Deletion
 
-Параметры:
+**Request:**
+* URL: `/api/files`
+* Method: `DELETE`
 
-		r — строка, содержащая список запрашиваемых файлов с фильтрами через запятую
-			Пример: 8/0/4.jpeg:w50h70,c/d/test__Kopiya_4.jpeg:w150h150fill|sat60
-			Фильтр начинается через двоеточие после имени файла.
-			Разные фильтры отделяются друг от друга вертикальной чертой
+**Parameters:**
+* `r` — string containing a list of files to be deleted separated by commas
+    * Example: `9/6/4.jpeg`
 
-		force — (1/0, необязательный, по-умолчанию 0) сбрасывать ли закешированные изображения
-			перед созданмем новых.
-
-Ответ:
-
-		{
-			0: {
-				request_filters: "w50h70"
-				request_file: "8/0/4.jpeg"
-				result: false
-				err_code: 303
-			}
-			1: {
-				request_filters: "w150h150fill|sat60"
-				request_file: "c/d/test__Kopiya_4.jpeg"
-				result: true
-				output_filesize: 8747
-				output_file: "cache/c/d/test__Kopiya_4.jpeg/w150h150fill|sat60.jpeg"
-			}
-        }
-
-# Удаление файлов
-
-Запрос:
-
-		URL: /api/files
-		Method: DELETE
-
-Параметры:
-
-		r — строка, содержащая список удаляемых файлов через запятую
-			Пример: 9/6/4.jpeg
-
-Ответ:
-
-		{
-			0: {
-				request_file: "9/6/4.jpeg"
-				result: true
-			}
-		}
+**Response:**
+```json
+{
+    "0": {
+        "request_file": "9/6/4.jpeg",
+        "result": true
+    }
+}
+```

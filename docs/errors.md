@@ -1,19 +1,34 @@
-# Коды ошибок
+## Error Codes
 
-## Ошибки авторизации
+### Authorization Errors
 
-	101 — не найден клиент
-	102 – не найден токен
-	103 — пара клиент-токен неверна
+* **101** — Client not found  
+  The specified client ID is not registered in the system.
 
-## Ошибки загрузки файлов
+* **102** — Token not found  
+  The provided token is invalid or does not exist in the system.
 
-	201 — нет параметра file при загрузке
-	202 — загружаемый файл не соответствует разрешенным типам
-	203 — превышен допустимый размер загружаемого файла
+* **103** — Invalid client-token pair  
+  The combination of client and token does not match any valid authorization credentials.
 
-## Ошибки получения файлов
+### File Upload Errors
 
-	301 — пустой запрос, нет параметра r
-	302 — неверно передано имя файла
-	303 — запрашиваемый файл не найден
+* **201** — Missing 'file' parameter  
+  The required file parameter is not provided during upload.
+
+* **202** — Invalid file type  
+  The uploaded file does not match the allowed file types.
+
+* **203** — File size exceeds limit  
+  The uploaded file exceeds the maximum allowed size.
+
+### File Retrieval Errors
+
+* **301** — Empty request (missing 'r' parameter)  
+  The request does not contain the required 'r' parameter specifying the files to retrieve.
+
+* **302** — Invalid file name format  
+  The file name is specified incorrectly or in an unsupported format.
+
+* **303** — File not found  
+  The requested file does not exist in the storage.

@@ -1,57 +1,79 @@
-# Фильтры обработки изображений
+## Image Processing Filters
 
-## Изменение размеров изображения
+### Resizing Operations
 
-### Вписывание в прямоугольник
+#### Fit to Rectangle
 
-		w(WIDTH)h(HEIGHT), где
-			(WIDTH) — ширина прямоугольника, px
-			(HEIGHT) — высота прямоугольника, px
+```
+w(WIDTH)h(HEIGHT)
+```
+* **WIDTH** — rectangle width in pixels
+* **HEIGHT** — rectangle height in pixels
 
-При несовпадении пропорций прямоугольника и изображения последнее вписывается по наибольшей стороне
+When aspect ratios do not match, the image is resized to fit the largest side of the rectangle.
 
-### Заполнение прямоугольника
+#### Fill Rectangle
 
-		w(WIDTH)h(HEIGHT)fill, где
-			(WIDTH) — ширина прямоугольника, px
-			(HEIGHT) — высота прямоугольника, px
+```
+w(WIDTH)h(HEIGHT)fill
+```
+* **WIDTH** — rectangle width in pixels
+* **HEIGHT** — rectangle height in pixels
 
-При несовпадении пропорций прямоугольника и изображения последнее вписывается по наименьшей стороне, невошедшие в
-прямоугольник части изображения отрезаются
+When aspect ratios do not match, the image is resized to fit the smallest side, and parts outside the rectangle are cropped.
 
-### Модификация с последующей конвертацией
-		w(WIDTH)h(HEIGHT)(fit|fill).(FORMAT), где
-			(WIDTH) — ширина прямоугольника, px
-			(HEIGHT) — высота прямоугольника, px
-			(fit|fill) — режим заполнения прямоугольника (optional)
-			(FORMAT) — формат, в который необходимо произвести конвертацию
+#### Resize with Conversion
 
-## Изменение цветопередачи (для растровых изображений)
+```
+w(WIDTH)h(HEIGHT)(fit|fill).(FORMAT)
+```
+* **WIDTH** — rectangle width in pixels
+* **HEIGHT** — rectangle height in pixels
+* **fit|fill** — optional rectangle filling mode
+* **FORMAT** — target conversion format
 
-### Насыщенность
+### Color Manipulation (Raster Images Only)
 
-		sat(SATURATION), где
-			(SATURATION) — процент, на который нужно увеличить или уменьшить насыщенность
+#### Saturation Adjustment
 
-### Яркость
+```
+sat(SATURATION)
+```
+* **SATURATION** — percentage value to increase or decrease saturation
 
-		bright(BRIGHTNESS), где
-			(BRIGHTNESS) — процент, на который нужно увеличить или уменьшить яркость
-			
-### Размытие
+#### Brightness Adjustment
 
-		blur(RADIUSxSIGMA), где
-			(RADIUS) — радиус в операторе blur
-			(SIGMA) — сигма в операторе blur
-			
-### Наложение водяного знака
+```
+bright(BRIGHTNESS)
+```
+* **BRIGHTNESS** — percentage value to increase or decrease brightness
 
-		 wm
-		 
-**Параметры наложения описываются в файле настроек settings.py**
+#### Blur Effect
 
-## Конвертация изображения в другой формат
-		c.(FORMAT), где
-			(FORMAT) — формат изображения, в который необходимо произвести конвертацию
+```
+blur(RADIUSxSIGMA)
+```
+* **RADIUS** — blur operator radius
+* **SIGMA** — blur operator sigma value
 
-**Для векторных изображений доступны конвертации в следующие форматы: png, pdf, ps, svg, xml**
+### Watermark Overlay
+
+```
+wm
+```
+
+* Watermark overlay parameters are defined in the **settings.py** configuration file
+
+### Format Conversion
+
+```
+c.(FORMAT)
+```
+* **FORMAT** — target image format for conversion
+
+**Supported vector image conversions:**
+* PNG
+* PDF
+* PS
+* SVG
+* XML
