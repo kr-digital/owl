@@ -1,3 +1,5 @@
+# Simple file storage server with image resampling and REST API
+
 ## Installation
 
 ### Native Installation
